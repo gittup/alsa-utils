@@ -1,0 +1,12 @@
+ifeq (@(SND),y)
+include_rules
+
+generated_headers += $(GITTUP_ROOT)/alsa-lib/include/asoundlib.h
+CFLAGS += -I$(GITTUP_ROOT)/alsa-lib
+: foreach *.c | $(generated_headers) |> !cc |> %B.o
+
+libs += $(GITTUP_ROOT)/alsa-lib/libasound.a
+libs += $(GITTUP_ROOT)/uClibc/libpthread/linuxthreads.old/libpthread.a
+libs += $(GITTUP_ROOT)/uClibc/libm/libm.a
+: *.o $(libs) |> !ld |> amixer
+endif
